@@ -4,8 +4,8 @@ import Posts from "./Posts";
 
 class Application extends Component {
   componentDidMount() {
-    const posts = FirestoreService.getPosts();
-    console.log("posts",posts);
+    const postsA = FirestoreService.getPosts();
+    console.log("posts",postsA);
   }
   state = {
     posts: [
