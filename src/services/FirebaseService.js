@@ -6,11 +6,7 @@ const FirestoreService = {
     return firebase.firestore().collection(collection);
   },
   onCollectionUpdate(querySnapshot = [], callback) {
-    const posts = [];
-
-    querySnapshot.forEach((doc) => {
-      posts.push(doc.data());
-    });
+    const posts = (querySnapshot.docs || []).map((doc) => doc.data());
     callback(posts);
   },
   getPost(query, callback) {
@@ -25,7 +21,14 @@ const FirestoreService = {
   },
   getPosts(callback) {
     const ref = this.collectionRef(POSTS);
-    ref.onSnapshot((snapshot) => this.onCollectionUpdate(snapshot, callback));
+    const unsubscribe = ref.onSnapshot(
+      { includeMetadataChanges: true },
+      (snapshot) => this.onCollectionUpdate(snapshot, callback),
+      (err) => {
+        console.log("getPosts error", err);
+      },
+      () => unsubscribe()
+    );
   },
   updatePost(dataToSave = {}, callback) {
     if (!dataToSave.id) return;
