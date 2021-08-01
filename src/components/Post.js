@@ -13,7 +13,6 @@ const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
     <article className="Post">
       <div className="Post--content">
         <h3>
-          {id}
           {title}
         </h3>
         <div>{content}</div>
