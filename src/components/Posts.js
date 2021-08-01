@@ -3,7 +3,6 @@ import Post from './Post';
 import AddPost from './AddPost';
 
 const Posts = ({ posts, onCreate }) => {
-  console.log('onCreate',onCreate);
   
   return (
     <section className="Posts">
