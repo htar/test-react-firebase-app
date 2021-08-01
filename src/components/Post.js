@@ -1,20 +1,20 @@
 import React from "react";
 
 import moment from "moment";
-import FirestoreService from "../services/FirebaseService";
 
-const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
-  const deletePost = () => {
-    FirestoreService.deletePost(`${id}`, () => {
-      console.log("Document successfully deleted!");
-    });
-  };
+const Post = ({
+  title,
+  content,
+  user,
+  createdAt,
+  stars,
+  comments,
+  onRemovePost,
+}) => {
   return (
     <article className="Post">
       <div className="Post--content">
-        <h3>
-          {title}
-        </h3>
+        <h3>{title}</h3>
         <div>{content}</div>
       </div>
       <div className="Post--meta">
@@ -36,7 +36,7 @@ const Post = ({ id, title, content, user, createdAt, stars, comments }) => {
         </div>
         <div>
           <button className="star">Star</button>
-          <button className="delete" onClick={deletePost}>
+          <button className="delete" onClick={() => onRemovePost()}>
             Delete
           </button>
         </div>

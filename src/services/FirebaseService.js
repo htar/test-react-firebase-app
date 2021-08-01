@@ -5,13 +5,13 @@ const FirestoreService = {
   collectionRef(collection) {
     return firebase.firestore().collection(collection);
   },
-  onCollectionUpdate(querySnapshot=[],callback) {
+  onCollectionUpdate(querySnapshot = [], callback) {
     const posts = [];
-    
+
     querySnapshot.forEach((doc) => {
       posts.push(doc.data());
     });
-    callback(posts)
+    callback(posts);
   },
   getPost(query, callback) {
     const ref = this.collectionRef(POSTS).doc(query);
@@ -25,7 +25,7 @@ const FirestoreService = {
   },
   getPosts(callback) {
     const ref = this.collectionRef(POSTS);
-    ref.onSnapshot((snapshot=>this.onCollectionUpdate(snapshot,callback)))
+    ref.onSnapshot((snapshot) => this.onCollectionUpdate(snapshot, callback));
   },
   updatePost(dataToSave = {}, callback) {
     if (!dataToSave.id) return;
@@ -51,12 +51,17 @@ const FirestoreService = {
         console.error("Error adding post: ", error);
       });
   },
-  deletePost(id,callback){
-    this.collectionRef(POSTS).doc(id).delete().then(() => {
-      callback()
-    }).catch((error) => {
-      console.error("Error removing post: ", error);
-    });
+  deletePost(id, callback) {
+    // firebase.firestore().doc(`${POSTS}/${id}`)
+    const ref = this.collectionRef(POSTS).doc(id);
+    ref
+      .delete()
+      .then(() => {
+        callback();
+      })
+      .catch((error) => {
+        console.error("Error removing post: ", error);
+      });
   },
 };
 export default FirestoreService;

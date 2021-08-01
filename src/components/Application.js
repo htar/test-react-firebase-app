@@ -18,6 +18,14 @@ class Application extends Component {
       this.setState({ posts: [post, ...posts] })
     );
   };
+  handleRemove(id) {
+    FirestoreService.deletePost(`${id}`, () => {
+      console.log("Document successfully deleted!");
+      const allPosts = this.state.posts;
+      const posts = allPosts.filter((post) => post.id !== id);
+      this.setState({ posts });
+    });
+  }
 
   render() {
     const { posts } = this.state;
@@ -25,7 +33,11 @@ class Application extends Component {
     return (
       <main className="Application">
         <h1>Think Piece</h1>
-        <Posts posts={posts} onCreate={this.handleCreate} />
+        <Posts
+          posts={posts}
+          onCreatePost={this.handleCreate}
+          onRemovePost={(id)=>this.handleRemove(id)}
+        />
       </main>
     );
   }
