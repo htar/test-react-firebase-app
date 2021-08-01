@@ -1,6 +1,6 @@
 # Simple React app with deployed and DB in Firebase
 
-Example https://fir-test-fcc46.web.app
+Example https://simple-crud-4cf7c.web.app/
 
 ## Initial Set Up
 

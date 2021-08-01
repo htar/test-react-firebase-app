@@ -1,4 +1,5 @@
 import firebase from "firebase/app";
+import "firebase/analytics";
 import "firebase/firestore";
 const env = process.env;
 
@@ -12,10 +13,11 @@ const firebaseConfig = {
   appId: env.REACT_APP_APP_ID,
   measurementId: env.REACT_APP_MEASUREMENT_ID,
 };
-const settings = {timestampsInSnapshots: true};
+const settings = { timestampsInSnapshots: true };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 firebase.firestore().settings(settings);
 
 window.firebase = firebase;
