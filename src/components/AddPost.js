@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import FirestoreService from "services/FirebaseService";
+import moment from "moment";
 
 class AddPost extends Component {
   state = { title: "", content: "" };
@@ -27,7 +28,7 @@ class AddPost extends Component {
       },
       favorites: 0,
       comments: 0,
-      createdAt: new Date(),
+      createdAt: moment().format("DD/MM/YYYY"),
     };
 
     this.createPost(post);

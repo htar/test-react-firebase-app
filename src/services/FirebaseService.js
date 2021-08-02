@@ -30,12 +30,14 @@ const FirestoreService = {
       () => unsubscribe()
     );
   },
-  updatePost(dataToSave = {}, callback = () => {}) {
-    if (!dataToSave.id) return;
-    const updateRef = this.collectionRef(POSTS).doc(dataToSave.id);
+  updatePost(id, dataToSave = {}, callback = () => {}) {
+    if (!id) return;
+    const updateRef = firebase.firestore().doc(`${POSTS}/${id}`);
     updateRef
-      .set(dataToSave)
-      .then(() => {
+      .update(dataToSave)
+      .then((res) => {
+        console.log("res", res);
+
         callback();
       })
       .catch((error) => {
