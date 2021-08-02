@@ -5,11 +5,11 @@ const FirestoreService = {
   collectionRef(collection) {
     return firebase.firestore().collection(collection);
   },
-  onCollectionUpdate(querySnapshot = [], callback) {
+  onCollectionUpdate(querySnapshot = [], callback = () => {}) {
     const posts = (querySnapshot.docs || []).map((doc) => doc.data());
     callback(posts);
   },
-  getPost(query, callback) {
+  getPost(query, callback = () => {}) {
     const ref = this.collectionRef(POSTS).doc(query);
     ref.get().then((doc) => {
       if (doc.exists) {
@@ -19,7 +19,7 @@ const FirestoreService = {
       }
     });
   },
-  getPosts(callback) {
+  getPosts(callback = () => {}) {
     const ref = this.collectionRef(POSTS);
     const unsubscribe = ref.onSnapshot(
       { includeMetadataChanges: true },
@@ -30,7 +30,7 @@ const FirestoreService = {
       () => unsubscribe()
     );
   },
-  updatePost(dataToSave = {}, callback) {
+  updatePost(dataToSave = {}, callback = () => {}) {
     if (!dataToSave.id) return;
     const updateRef = this.collectionRef(POSTS).doc(dataToSave.id);
     updateRef
@@ -42,7 +42,7 @@ const FirestoreService = {
         console.error("Error update post: ", error);
       });
   },
-  setPost(dataToSave, callback) {
+  setPost(dataToSave, callback = () => {}) {
     const ref = this.collectionRef(POSTS);
 
     ref
@@ -54,9 +54,8 @@ const FirestoreService = {
         console.error("Error adding post: ", error);
       });
   },
-  deletePost(id, callback) {
-    // firebase.firestore().doc(`${POSTS}/${id}`)
-    const ref = this.collectionRef(POSTS).doc(id);
+  deletePost(id, callback = () => {}) {
+    const ref = firebase.firestore().doc(`${POSTS}/${id}`);
     ref
       .delete()
       .then(() => {
