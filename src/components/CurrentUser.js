@@ -1,8 +1,25 @@
-import React from 'react';
+import React from "react";
+import { firebaseSignOut } from "services/firebase";
 
-import moment from 'moment';
+import moment from "moment";
+import FirestoreService from "services/FirebaseService";
 
 const CurrentUser = ({ displayName, photoURL, email, createdAt, children }) => {
+  const handleClick = () => {
+    firebaseSignOut(()=>{
+      localStorage.clear();
+      window.indexedDB
+        .databases()
+        .then(r => {
+          for (var i = 0; i < r.length; i++)
+            window.indexedDB.deleteDatabase(r[i].name);
+        })
+        .then(() => {
+          console.log('clear indexedDB - success');
+        });
+        window.location.reload(true);
+    })
+  };
   return (
     <section className="CurrentUser">
       <div className="CurrentUser--profile">
@@ -15,16 +32,16 @@ const CurrentUser = ({ displayName, photoURL, email, createdAt, children }) => {
       </div>
       <div>
         <div>{children}</div>
-        <button>Sign Out</button>
+        <button onClick={handleClick}>Sign Out</button>
       </div>
     </section>
   );
 };
 
 CurrentUser.defaultProps = {
-  displayName: 'Bill Murray',
-  email: 'billmurray@mailinator.com',
-  photoURL: 'https://www.fillmurray.com/300/300',
+  displayName: "Bill Murray",
+  email: "billmurray@mailinator.com",
+  photoURL: "https://www.fillmurray.com/300/300",
   createdAt: new Date(),
 };
 

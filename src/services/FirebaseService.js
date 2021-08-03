@@ -1,9 +1,9 @@
-import firebase from "./firebase";
+import { firestore } from "services/firebase";
 const POSTS = "posts";
 
 const FirestoreService = {
   collectionRef(collection) {
-    return firebase.firestore().collection(collection);
+    return firestore.collection(collection);
   },
   onCollectionUpdate(querySnapshot = [], callback = () => {}) {
     const posts = (querySnapshot.docs || []).map((doc) => doc.data());
@@ -30,9 +30,20 @@ const FirestoreService = {
       () => unsubscribe()
     );
   },
+  // signOut(){
+  //   auth.signOut()
+  // },
+  // authFirebase(callback = () => {}) {
+  //   const unsubscribe = auth.onAuthStateChanged(
+  //     (user) => {
+  //       callback(user);
+  //     },
+  //     () => unsubscribe()
+  //   );
+  // },
   updatePost(id, dataToSave = {}, callback = () => {}) {
     if (!id) return;
-    const updateRef = firebase.firestore().doc(`${POSTS}/${id}`);
+    const updateRef = firestore.doc(`${POSTS}/${id}`);
     updateRef
       .update(dataToSave)
       .then((res) => {
@@ -57,7 +68,7 @@ const FirestoreService = {
       });
   },
   deletePost(id, callback = () => {}) {
-    const ref = firebase.firestore().doc(`${POSTS}/${id}`);
+    const ref = firestore.doc(`${POSTS}/${id}`);
     ref
       .delete()
       .then(() => {

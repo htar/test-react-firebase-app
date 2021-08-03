@@ -15,17 +15,15 @@ class AddPost extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { title, content } = this.state;
+    const { user = null } = this.props;
 
     const post = {
       id: Date.now().toString(),
       title,
       content,
-      user: {
-        uid: "1111",
-        displayName: "Steve Kinney",
-        email: "steve@mailinator.com",
-        photoURL: "http://placekitten.com/g/200/200",
-      },
+
+      user,
+
       favorites: 0,
       comments: 0,
       createdAt: moment().format("DD/MM/YYYY"),
