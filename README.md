@@ -14,3 +14,4 @@ Example https://simple-crud-4cf7c.web.app/
 
   Let's add firebase config to .env
   https://github1s.com/firebase/snippets-web/blob/HEAD/auth/google-signin.js
+  https://firebase.google.com/docs/auth/web/password-auth
