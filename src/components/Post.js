@@ -4,11 +4,11 @@ import FirestoreService from "services/FirebaseService";
 import moment from "moment";
 
 const Post = (post = null) => {
-  const { id, title, content, user=null, createdAt, stars, comments } = post;
+  const { id, title, content, user = null, createdAt, stars, comments } = post;
   const date = moment(createdAt, "DD/MM/YYYY").format("DD/MM/YYYY");
 
   const onRemovePost = () => {
-    FirestoreService.deletePost(`${id}`, () => console.log("post was removed"));
+    FirestoreService.deletePost(id, () => console.log("post was removed"));
   };
   const star = () => {
     FirestoreService.updatePost(id, { stars: stars + 1 }, () =>
@@ -44,9 +44,11 @@ const Post = (post = null) => {
               <button className="star" onClick={() => star()}>
                 Star
               </button>
-              <button className="delete" onClick={() => onRemovePost()}>
-                Delete
-              </button>
+              {
+                <button className="delete" onClick={() => onRemovePost()}>
+                  Delete
+                </button>
+              }
             </div>
           </div>
         </article>

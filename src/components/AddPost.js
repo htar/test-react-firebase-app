@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { auth } from "services/firebase";
 import FirestoreService from "services/FirebaseService";
 import moment from "moment";
 
@@ -15,14 +16,20 @@ class AddPost extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { title, content } = this.state;
-    const { user = null } = this.props;
+    const { uid, displayName, email, photoURL } = auth.currentUser || {};
 
+    debugger;
     const post = {
       id: Date.now().toString(),
       title,
       content,
 
-      user,
+      user: {
+        uid,
+        displayName,
+        email,
+        photoURL,
+      },
 
       favorites: 0,
       comments: 0,

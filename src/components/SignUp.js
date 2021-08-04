@@ -1,18 +1,27 @@
-import React, { Component } from 'react';
-
+import React, { Component } from "react";
+import { auth, createUserProfileDocument } from "services/firebase";
 class SignUp extends Component {
-  state = { displayName: '', email: '', password: '' };
+  state = { displayName: "", email: "", password: "" };
 
-  handleChange = event => {
+  handleChange = async (event) => {
     const { name, value } = event.target;
 
     this.setState({ [name]: value });
   };
 
-  handleSubmit = event => {
+  handleSubmit = async (event) => {
     event.preventDefault();
-
-    this.setState({ displayName: '', email: '', password: '' });
+    const { displayName, email, password } = this.state;
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      createUserProfileDocument(user, { displayName });
+    } catch (error) {
+      console.error("error", error);
+    }
+    this.setState({ displayName: "", email: "", password: "" });
   };
 
   render() {

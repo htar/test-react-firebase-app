@@ -1,4 +1,5 @@
 import { firestore } from "services/firebase";
+
 const POSTS = "posts";
 
 const FirestoreService = {
@@ -68,10 +69,10 @@ const FirestoreService = {
       });
   },
   deletePost(id, callback = () => {}) {
-    const ref = firestore.doc(`${POSTS}/${id}`);
-    ref
-      .delete()
-      .then(() => {
+    this.collectionRef(POSTS).doc(id).delete()
+      .then((res) => {
+        console.log('res',res);
+        
         callback();
       })
       .catch((error) => {
