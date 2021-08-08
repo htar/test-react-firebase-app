@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { auth, createUserProfileDocument } from "services/firebase";
+import { auth } from "services/firebase";
+import FirestoreService from "services/FirebaseService";
+
 class SignUp extends Component {
   state = { displayName: "", email: "", password: "" };
 
@@ -17,7 +19,7 @@ class SignUp extends Component {
         email,
         password
       );
-      createUserProfileDocument(user, { displayName });
+      FirestoreService.createUserProfileDocument(user, { displayName });
     } catch (error) {
       console.error("error", error);
     }
