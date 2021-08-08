@@ -25,6 +25,21 @@ window.firebase = firebase;
 export const firestore = firebase.firestore();
 export const auth = firebase.auth();
 
+firestore.enablePersistence().catch(function (err) {
+  if (err.code === "failed-precondition") {
+    console.log("persistance failed");
+  } else if (err.code === "unimplemented") {
+    console.log("persistance not available");
+  }
+});
+
+firebase
+  .auth()
+  .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+  .catch((error) => {
+    console.log("setPersistence error", error);
+  });
+
 export const provider = new firebase.auth.GoogleAuthProvider();
 export const firebaseSignWithGoogle = () => {
   auth
@@ -50,7 +65,10 @@ export const firebaseSignWithGoogle = () => {
       // ...
     });
 };
-export const firebaseSignOut = (callback = () => {}, errorCallback = () => {}) => {
+export const firebaseSignOut = (
+  callback = () => {},
+  errorCallback = () => {}
+) => {
   auth
     .signOut()
     .then(() => {
@@ -64,12 +82,12 @@ export const firebaseSignOut = (callback = () => {}, errorCallback = () => {}) =
     });
 };
 
-export const getUserDocument = async uid => {
+export const getUserDocument = async (uid) => {
   if (!uid) return null;
   try {
-    return firestore.collection('users').doc(uid);
+    return firestore.collection("users").doc(uid);
   } catch (error) {
-    console.error('Error fetching user', error.message);
+    console.error("Error fetching user", error.message);
   }
 };
 
@@ -94,7 +112,7 @@ export const createUserProfileDocument = async (user, additionalData) => {
         ...additionalData,
       });
     } catch (error) {
-      console.error('Error creating user', error.message);
+      console.error("Error creating user", error.message);
     }
   }
 

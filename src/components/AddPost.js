@@ -18,7 +18,6 @@ class AddPost extends Component {
     const { title, content } = this.state;
     const { uid, displayName, email, photoURL } = auth.currentUser || {};
 
-    debugger;
     const post = {
       id: Date.now().toString(),
       title,
