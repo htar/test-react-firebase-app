@@ -1,18 +1,24 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import { firebaseSignWithGoogle } from "services/firebase";
 
 class SignIn extends Component {
-  state = { email: '', password: '' };
+  state = { email: "", password: "" };
 
-  handleChange = event => {
+  handleChange = (event) => {
     const { name, value } = event.target;
 
     this.setState({ [name]: value });
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
 
-    this.setState({ email: '', password: '' });
+    this.setState({ email: "", password: "" });
+  };
+  signWithGoogle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    firebaseSignWithGoogle();
   };
 
   render() {
@@ -36,7 +42,7 @@ class SignIn extends Component {
           onChange={this.handleChange}
         />
         <input type="submit" value="Sign In" />
-        <button>Sign In With Google</button>
+        <button onClick={this.signWithGoogle}>Sign In With Google</button>
       </form>
     );
   }

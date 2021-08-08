@@ -4,11 +4,11 @@ import FirestoreService from "services/FirebaseService";
 import moment from "moment";
 
 const Post = (post = null) => {
-  const { id, title, content, user, createdAt, stars, comments } = post;
+  const { id, title, content, user = null, createdAt, stars, comments } = post;
   const date = moment(createdAt, "DD/MM/YYYY").format("DD/MM/YYYY");
 
   const onRemovePost = () => {
-    FirestoreService.deletePost(`${id}`, () => console.log("post was removed"));
+    FirestoreService.deletePost(id, () => console.log("post was removed"));
   };
   const star = () => {
     FirestoreService.updatePost(id, { stars: stars + 1 }, () =>
@@ -20,7 +20,7 @@ const Post = (post = null) => {
       {!!post ? (
         <article className="Post">
           <div className="Post--content">
-            <h3>{title}</h3>
+            {title && <h3>{title}</h3>}
             <div>{content}</div>
           </div>
           <div className="Post--meta">
@@ -37,16 +37,18 @@ const Post = (post = null) => {
                 </span>
                 {comments}
               </p>
-              <p>Posted by {user.displayName}</p>
-              <p>{`${date}`}</p>
+              {user && user.displayName && <p>Posted by {user.displayName}</p>}
+              {date && <p>{`${date}`}</p>}
             </div>
             <div>
               <button className="star" onClick={() => star()}>
                 Star
               </button>
-              <button className="delete" onClick={() => onRemovePost()}>
-                Delete
-              </button>
+              {
+                <button className="delete" onClick={() => onRemovePost()}>
+                  Delete
+                </button>
+              }
             </div>
           </div>
         </article>

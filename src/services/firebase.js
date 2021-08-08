@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/analytics";
 import "firebase/firestore";
+import "firebase/auth";
 const env = process.env;
 
 const firebaseConfig = {
@@ -21,5 +22,64 @@ firebase.analytics();
 firebase.firestore().settings(settings);
 
 window.firebase = firebase;
+export const firestore = firebase.firestore();
+export const auth = firebase.auth();
+
+firestore.enablePersistence().catch(function (err) {
+  if (err.code === "failed-precondition") {
+    console.log("persistance failed");
+  } else if (err.code === "unimplemented") {
+    console.log("persistance not available");
+  }
+});
+
+firebase
+  .auth()
+  .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+  .catch((error) => {
+    console.log("setPersistence error", error);
+  });
+
+export const provider = new firebase.auth.GoogleAuthProvider();
+export const firebaseSignWithGoogle = () => {
+  auth
+    .signInWithPopup(provider)
+    .then((result) => {
+      /** @type {firebase.auth.OAuthCredential} */
+      var credential = result.credential;
+
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      // ...
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
+};
+export const firebaseSignOut = (
+  callback = () => {},
+  errorCallback = () => {}
+) => {
+  auth
+    .signOut()
+    .then(() => {
+      console.log("Sign-out successful.");
+
+      callback();
+    })
+    .catch((error) => {
+      console.log("An error happened.");
+      errorCallback();
+    });
+};
 
 export default firebase;
